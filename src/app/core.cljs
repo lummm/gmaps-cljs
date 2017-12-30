@@ -14,7 +14,6 @@
 (defn mount-root []
   (render [views/main] (.getElementById js/document "app")))
 
-
 (defn ^:export init []
   (routes/start!)
   (dispatch-sync [:initialize-db])

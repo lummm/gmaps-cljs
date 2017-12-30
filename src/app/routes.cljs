@@ -3,7 +3,7 @@
             [pushy.core :as pushy]
             [re-frame.core :as re-frame]))
 
-(def routes ["/" {""      :home
+(def routes ["/" {""        :landing
                   ["about/" :about-id] :about}])
 
 (defn- parse-url [url]

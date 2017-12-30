@@ -1,11 +1,11 @@
 (ns app.views
   (:require [re-frame.core :as re-frame]
               [app.components.nav :as nav]
-              [app.pages.home :as home]
+              [app.pages.landing :as landing]
               [app.pages.about :as about]))
 
 (defmulti pages identity)
-(defmethod pages :home [] [home/main])
+(defmethod pages :landing [] [landing/page])
 (defmethod pages :about [] [about/main])
 (defmethod pages :default [] [:div.tc "Nothing here, chap."])
 
