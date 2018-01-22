@@ -1,6 +1,8 @@
-(ns app.pages.landing)
+(ns app.pages.landing
+  (:require [reagent-material-ui.core :as ui]))
 
 (defn page []
   (fn []
-    [:img.w-100
-     {:src "img/vietnam-bg.jpg"}]))
+    [:div
+     [:img.w-100
+      {:src "img/vietnam-bg.jpg"}]]))

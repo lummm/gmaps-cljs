@@ -13,6 +13,7 @@
                  [reagent                       "0.8.0-alpha2"]
                  [re-frame                      "0.10.3-beta1"]
                  [bidi                          "2.1.2"]
+                 [reagent-material-ui           "0.2.5"]
                  [kibu/pushy                    "0.3.8"]])
 
 (require

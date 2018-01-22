@@ -1,11 +1,14 @@
 (ns app.handlers.core
   (:require [re-frame.core :refer [register-handler]]
-            [app.db :as db]))
+            [app.db :as db]
+            [app.components.db :refer [component-dbs]]))
 
 (register-handler
   :initialize-db
   (fn  [_ _]
-    db/default-db))
+    (reduce merge
+            (concat [db/default-db]
+                    (component-dbs)))))
 
 (register-handler
   :route
