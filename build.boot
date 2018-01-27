@@ -5,7 +5,7 @@
                  [adzerk/boot-cljs-repl         "0.3.3"]
                  [adzerk/boot-reload            "0.5.2"]
                  [com.cemerick/piggieback       "0.2.1"]
-                 [cljs-http                     "0.1.44"]                 
+                 [cljs-http                     "0.1.44"]
                  [weasel                        "0.7.0"]
                  [org.clojure/tools.nrepl       "0.2.13"]
                  [binaryage/devtools            "0.9.8"]
@@ -14,6 +14,7 @@
                  [re-frame                      "0.10.3-beta1"]
                  [bidi                          "2.1.2"]
                  [reagent-material-ui           "0.2.5"]
+                 [cljsjs/google-maps            "3.18-1"]
                  [kibu/pushy                    "0.3.8"]])
 
 (require
@@ -28,4 +29,8 @@
         (cljs-repl)
         (reload :on-jsload 'app.core/mount-root)
         (cljs :compiler-options {:preloads '[devtools.preload]})
+        (target)))
+
+(deftask prod []
+  (comp (cljs :compiler-options {:optimizations :advanced})
         (target)))
