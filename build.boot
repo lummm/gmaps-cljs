@@ -14,7 +14,6 @@
                  [re-frame                      "0.10.3-beta1"]
                  [bidi                          "2.1.2"]
                  [reagent-material-ui           "0.2.5"]
-                 [cljsjs/google-maps            "3.18-1"]
                  [kibu/pushy                    "0.3.8"]])
 
 (require
@@ -23,14 +22,21 @@
  '[adzerk.boot-reload             :refer [reload]]
  )
 
+(def base-compile-opts
+  {:externs ["externs.js"]})
+
 (deftask dev []
   (comp (watch)
         (cljs-repl-env)
         (cljs-repl)
         (reload :on-jsload 'app.core/mount-root)
-        (cljs :compiler-options {:preloads '[devtools.preload]})
+        (cljs :compiler-options (merge
+                                 base-compile-opts
+                                 {:preloads '[devtools.preload]}))
         (target)))
 
 (deftask prod []
-  (comp (cljs :compiler-options {:optimizations :advanced})
+  (comp (cljs :compiler-options (merge
+                                 base-compile-opts
+                                 {:optimizations :advanced}))
         (target)))
