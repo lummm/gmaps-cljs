@@ -6,7 +6,7 @@
             [reagent-material-ui.core :as ui])
   (:require-macros [reagent.ratom :refer [reaction]]))
 
-(defn default-db []
+(def default-db
   {::menu-open false})
 
 (rf/reg-sub-raw
