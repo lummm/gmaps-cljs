@@ -4,7 +4,9 @@
 
 (defn page []
   (fn []
-    [:div
-     [:img.w-100
-      {:src "img/vietnam-bg.jpg"}]
-     [gmaps/home ]]))
+    [:div.w-100pe.h-100 {:style {:background-image "url('img/vietnam-bg.jpg')"
+                                 :background-size "cover"}}
+     [:div.h-100.flex-column
+      [:div.h-50]
+      [gmaps/map-component ]]
+     ]))

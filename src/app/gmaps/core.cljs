@@ -1,20 +1,20 @@
 (ns app.gmaps.core
   (:require [reagent.core :as r]))
 
-(defn home-render []
-  [:div {:style {:height "300px"}}
+(defn- map-render []
+  [:div.h-50
    ])
 
-(defn home-did-mount [this]
+(defn- map-did-mount [this]
   (let [lat-long (js/google.maps.LatLng. 49.28, -123.09)
         map-canvas (r/dom-node this)
         map-options (clj->js {"center" lat-long
                               "zoom" 12})
-        map (js/google.maps.Map. map-canvas map-options)
+        map-comp (js/google.maps.Map. map-canvas map-options)
         marker (js/google.maps.Marker. (clj->js {"position" lat-long
-                                                 "map" map}))]
+                                                 "map" map-comp}))]
     ))
 
-(defn home []
-  (r/create-class {:reagent-render home-render
-                   :component-did-mount home-did-mount}))
+(defn map-component []
+  (r/create-class {:reagent-render map-render
+                   :component-did-mount map-did-mount}))
