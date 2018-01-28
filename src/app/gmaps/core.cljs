@@ -6,11 +6,15 @@
    ])
 
 (defn home-did-mount [this]
-  (let [map-canvas (r/dom-node this)
-        map-options (clj->js {"center" (js/google.maps.LatLng. -34.397, 150.644)
-                              "zoom" 8})]
-    (js/google.maps.Map. map-canvas map-options)))
+  (let [lat-long (js/google.maps.LatLng. 49.28, -123.09)
+        map-canvas (r/dom-node this)
+        map-options (clj->js {"center" lat-long
+                              "zoom" 12})
+        map (js/google.maps.Map. map-canvas map-options)
+        marker (js/google.maps.Marker. (clj->js {"position" lat-long
+                                                 "map" map}))]
+    ))
 
 (defn home []
   (r/create-class {:reagent-render home-render
-                         :component-did-mount home-did-mount}))
+                   :component-did-mount home-did-mount}))
