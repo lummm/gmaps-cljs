@@ -7,6 +7,23 @@
 (def default-location (js/google.maps.LatLng. 49.28, -123.09))
 (def map-ref (atom {}))
 
+(defn make-info-display [marker]
+  (let [current-results @(rf/subscribe [::search-result ])
+        relevant-result (first
+                         (filter
+                          #(-> %
+                               (goog.object/get "geometry")
+                               (goog.object/get "location")
+                               (= (goog.object/get marker "position")))
+                          current-results))]
+    ;; ping the places api when you search to get a photo of the place at the same time
+    (str
+     "<div>"
+     "  <h1>" (goog.object/get relevant-result "name") "</h1>"
+     "  <img src='" (goog.object/get relevant-result "icon") "' />"
+     "  <p>" (goog.object/get relevant-result "formatted_address") "</p>"
+     "</div>")))
+
 ;; db
 (def default-db
   {::search-text nil
@@ -37,6 +54,13 @@
      (when-not (empty? current-markers)
        (doall (map #(js-invoke % "setMap" nil)
                    current-markers))))
+   (doall
+    (map (fn [marker]
+           (js-invoke
+            marker "addListener" "click"
+            (fn [] (js-invoke (js/google.maps.InfoWindow. (clj->js {"content" (make-info-display marker)}))
+                              "open" @map-ref marker))))
+         new-markers))
    (assoc-in db [::markers ] new-markers)))
 
 (rf/register-handler
@@ -68,7 +92,6 @@
 (defn- markers []
   (let [items (rf/subscribe [::search-result ])]
     (fn []
-      (js/console.log "rendering")
       (let [new-markers
             (doall
              (map
@@ -78,8 +101,7 @@
                   (js/google.maps.Marker. (clj->js {"position" location
                                                     "map" @map-ref}))))
               @items))]
-        (rf/dispatch [::set-markers new-markers]))
-      )))
+        (rf/dispatch [::set-markers new-markers])))))
 
 (defn- search []
   (let [search-text @(rf/subscribe [::search-text ])
@@ -93,14 +115,15 @@
   (fn []
     [:div.h-100.flex.flex-column
      [:div.h-50.flex.flex-column.justify-end
-      [:div.bg-white.ph3
+      [:div.bg-white.ph3 {:on-key-press #(when (= (goog.object/get % "charCode") 13)
+                                           (search))}
        [ui/TextField {:id :map-search
                       :name "Map search"
                       :hintText "Venue name..."
                       :hintStyle {:color "rgba(0, 0, 0, 0.3)"}
                       :inputStyle {:color "rgba(0, 0, 0, 0.9)"}
-                      :onChange (fn [event new-val] (rf/dispatch [::set-search-text new-val]))
-                      }]
+                      :onChange (fn [event new-val]
+                                  (rf/dispatch [::set-search-text new-val]))}]
        [:span.mh3 [ui/RaisedButton {:label "Search"
                                     :onClick #'search
                                     }]]]]
