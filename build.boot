@@ -32,7 +32,8 @@
         (reload :on-jsload 'app.core/mount-root)
         (cljs :compiler-options (merge
                                  base-compile-opts
-                                 {:preloads '[devtools.preload]}))
+                                 {:preloads '[devtools.preload]}
+                                 ))
         (target)))
 
 (deftask prod []
