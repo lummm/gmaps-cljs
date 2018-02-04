@@ -6,3 +6,6 @@ google.maps.Marker = function(){};
 google.maps.InfoWindow = function(){};
 google.maps.places = {};
 google.maps.places.PlacesService = function(){};
+google.maps.places.Autocomplete = function(){};
+google.maps.LatLng = function(){};
+google.maps.LatLngBounds = function(){};
